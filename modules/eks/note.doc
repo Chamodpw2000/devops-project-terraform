@@ -1,0 +1,22 @@
+To create a eks cluster we need 2 IAM roles:
+1. EKS Cluster Role: This role is used by the EKS service to manage the cluster.
+   It typically includes permissions for creating
+   and managing resources like EC2 instances, VPCs, and security groups.
+
+
+2. EKS Node Group Role: This role is used by the worker nodes in the EKS cluster. 
+   It allows the nodes to interact with AWS services, such as pulling container images from ECR,
+   writing logs to CloudWatch, and accessing other AWS resources.
+
+
+IAM roles need to be created with the necessary policies attached.
+The policies should include permissions for EKS operations, EC2 instance management,
+VPC management, and any other AWS services that the EKS cluster will interact with.
+
+Two separate polices need for the two roles:
+
+1. EKS Cluster Role Policy: This policy should include permissions for EKS operations, 
+   such as creating and managing clusters, managing VPCs, and handling security groups.
+2. EKS Node Group Role Policy: This policy should include permissions for EC2 instance management, 
+   ECR access, CloudWatch logging, and any other necessary AWS services that the worker nodes will
+   need to interact with.   
