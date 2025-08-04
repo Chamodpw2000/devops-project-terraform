@@ -19,7 +19,7 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "node_group_name" {
+variable "node_groups" {
   description = "EKS node group configuration"
   type        =  map(object({
     instance_type = list(string)
