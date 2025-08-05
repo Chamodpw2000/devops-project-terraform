@@ -23,8 +23,8 @@ resource "aws_iam_role_policy_attachment" "cluster_policy" {
 
 
 resource "aws_eks_cluster" "main" {
-    name = var.cluster.name
-    version = var.cluster.version
+    name = var.cluster_name
+    version = var.cluster_version
     role_arn = aws_iam_role.cluster.arn
 
     vpc_config {
@@ -37,7 +37,7 @@ resource "aws_eks_cluster" "main" {
 
 
 resource "aws_iam_role" "node" {
-  name = "${var.cluster.name}-node-role"
+  name = "${var.cluster_name}-node-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -72,7 +72,7 @@ resource "aws_eks_node_group" "main"{
   node_group_name = each.key
   node_role_arn = aws_iam_role.node.arn
   subnet_ids = var.subnet_ids
-  instance_types = each.value.instance_type
+  instance_types = each.value.instance_types
   capacity_type = each.value.capacity_type
   scaling_config {
     desired_size = each.value.scaling_config.desired_size

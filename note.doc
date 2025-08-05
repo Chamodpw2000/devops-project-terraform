@@ -1,0 +1,4 @@
+In terraform 3 types of blocks are used to define the configuration:
+1. **Resource Block**: Defines a single resource, such as an EC2 instance or an S3 bucket.
+2. **Data Block**: Used to fetch data from existing resources, such as an AMI or a VPC.
+3. **Module Block**: Allows you to encapsulate and reuse configurations across different parts of your infrastructure.
