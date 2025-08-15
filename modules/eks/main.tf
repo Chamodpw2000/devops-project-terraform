@@ -1,3 +1,8 @@
+
+
+
+
+
 resource "aws_iam_role" "cluster" {
   name = "cluster-role"
 

@@ -1,0 +1,63 @@
+VPC
+
+An AWS VPC (Virtual Private Cloud) is a logically isolated section of the Amazon Web Services 
+cloud where you can launch AWS resources in a virtual network that you define.
+
+Key Features of a VPC:
+Isolation: Your VPC is isolated from other AWS accounts and VPCs.
+Customizable Network: You choose the IP address range, create subnets, and configure route tables, gateways, and security settings.
+Subnets: Divide your VPC into public and private subnets for organizing resources and controlling access.
+Security: Use security groups and network ACLs to control inbound and outbound traffic to resources.
+Internet Connectivity: Attach an Internet Gateway to allow resources in public subnets to access the internet.
+Private Connectivity: Use NAT Gateways, VPNs, or AWS Direct Connect for private communication.
+
+Common Use Cases:
+Hosting web applications with public and private subnets.
+Running databases in private subnets for security.
+Creating hybrid cloud architectures with VPN or Direct Connect.
+
+Subnet
+
+An AWS subnet is a segment of a VPC’s IP address range where you can place resources like EC2 instances.
+
+Key Points:
+Subdivision: A subnet divides the VPC’s IP address range into smaller blocks.
+Location: Each subnet is mapped to a specific Availability Zone (AZ) in a region.
+
+Types:
+Public subnet: Can route traffic to/from the internet (usually via an Internet Gateway).
+Private subnet: No direct internet access; used for internal resources (like databases).
+
+Purpose:
+Organize resources by function, security, or availability.
+Control network access and routing.
+
+
+Example:
+If your VPC uses 10.0.0.0/16, you might create:
+
+Public subnet: 10.0.1.0/24 in AZ1
+Private subnet: 10.0.2.0/24 in AZ2
+
+Internet Gateway
+
+An Internet Gateway in AWS is a horizontally scaled, redundant, and highly available VPC component 
+that allows communication between resources in your VPC and the internet.
+
+Key Points:
+Purpose: Enables instances in public subnets to send and receive traffic to/from the internet.
+Attachment: You attach an Internet Gateway to your VPC.
+Routing: Public subnets use route tables that direct traffic (0.0.0.0/0) to the Internet Gateway.
+No Cost: There is no additional charge for using an Internet Gateway.
+Use Case: Required for web servers, load balancers, or any resource that needs public internet access. 
+Without an Internet Gateway, resources in your VPC cannot communicate directly with the internet.
+
+You attach an Internet Gateway to a VPC, not to a subnet.
+
+Explanation:
+
+The Internet Gateway provides internet access for the entire VPC.
+Subnets within the VPC can use the Internet Gateway for internet access if their route tables are configured to direct traffic to it.
+You do not attach an Internet Gateway directly to a subnet.
+Summary:
+Internet Gateway is attached to the VPC, and subnets use it via routing.
