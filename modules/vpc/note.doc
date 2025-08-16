@@ -61,3 +61,51 @@ Subnets within the VPC can use the Internet Gateway for internet access if their
 You do not attach an Internet Gateway directly to a subnet.
 Summary:
 Internet Gateway is attached to the VPC, and subnets use it via routing.
+
+Route tables
+
+An AWS route table is a resource within Amazon Virtual Private Cloud (VPC) that determines how network traffic is directed within the VPC. 
+It contains a set of rules, called routes, that specify where network packets are forwarded based on their destination IP address.
+
+Key points about AWS route tables:
+
+Each subnet in a VPC must be associated with a route table.
+The main route table is automatically created for every VPC, but you can create custom route tables.
+Routes can direct traffic to local VPC resources, internet gateways (for public access), NAT gateways, VPN connections, or peering connections.
+Modifying route tables allows you to control connectivity between subnets, the internet, and other networks.
+
+In Terraform, you define route tables using the aws_route_table resource, and routes using aws_route. 
+You associate route tables with subnets using aws_route_table_association. This setup is essential for configuring public/private subnets, 
+internet access, and secure networking in AWS.
+
+AWS Route Table Association
+
+The aws_route_table_association resource in Terraform links a specific subnet to a route table in your VPC.
+
+Explanation:
+
+By default, each subnet is associated with the VPC's main route table.
+Using aws_route_table_association, you can explicitly associate a subnet with a custom route table.
+This determines how traffic from that subnet is routed (e.g., to the internet gateway for public subnets, 
+or to a NAT gateway for private subnets).
+
+AWS Elastic IP
+
+An Elastic IP is a static, public IPv4 address that you can allocate to your AWS account.
+It is commonly used to provide a persistent public IP for resources like NAT gateways or EC2 instances.
+In your code, aws_eip is used to allocate EIPs for NAT gateways, allowing private subnets to access the internet (outbound) while keeping 
+their resources inaccessible from the internet (inbound).
+The domain = "vpc" argument ensures the EIP is for use within a VPC.
+
+An AWS NAT Gateway is a managed network service that enables resources in private subnets to access the internet for outbound traffic, 
+while preventing inbound connections from the internet.
+
+Key points:
+
+NAT stands for Network Address Translation.
+It allows instances in private subnets to connect to the internet (e.g., for software updates) without exposing them to 
+incoming internet traffic.
+The NAT Gateway uses an Elastic IP (EIP) as its public address.
+Traffic from private subnets is routed to the NAT Gateway, which then forwards it to the internet and returns responses.
+In Terraform, you create a NAT Gateway with the aws_nat_gateway resource, specifying the public subnet and EIP. 
+Private subnets use route tables that direct outbound traffic to the NAT Gateway, ensuring secure internet access for internal resources.

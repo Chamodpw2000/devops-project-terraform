@@ -167,6 +167,10 @@ resource "aws_internet_gateway" "main" {
     }
 }
 
+# route { cidr_block = "0.0.0.0/0"; gateway_id = aws_internet_gateway.main.id }
+# Adds a route that sends all outbound traffic (0.0.0.0/0 means "anywhere on the internet") 
+# to the VPC's internet gateway, allowing resources in associated subnets to access the internet.
+
 resource "aws_route_table" "public" {
     vpc_id = aws_vpc.main.id
     route {
@@ -185,6 +189,12 @@ resource "aws_route_table_association" "public" {
     route_table_id = aws_route_table.public.id
 }
 
+# count = length(var.private_subnet_cidrs): Creates one EIP for each private subnet, supporting multiple NAT gateways.
+# domain = "vpc": Ensures the EIP is for use within a VPC (required for NAT gateways).
+# tags: Assigns a name to each EIP for easy identification.
+# depends_on = [aws_internet_gateway.main]: Ensures the internet gateway is created before allocating EIPs, 
+# preventing dependency issues.
+
 resource "aws_eip" "nat" {
     count = length(var.private_subnet_cidrs)
     domain = "vpc"
@@ -196,6 +206,20 @@ resource "aws_eip" "nat" {
     depends_on = [aws_internet_gateway.main]
 }
 
+# allocation_id = aws_eip.nat[count.index].id: Assigns an Elastic IP to each NAT gateway,
+# providing a public IP for outbound traffic.
+# subnet_id = aws_subnet.public[count.index].id: Places each NAT gateway in a public subnet, 
+# so it can access the internet.
+
+
+# In this configuration, the number of NAT gateways equals the number of private subnets, and also equals 
+# the number of public subnets.
+# This is because:
+# You use count = length(var.private_subnet_cidrs) for NAT gateways, private subnets, and public subnets.
+# Each NAT gateway is placed in a corresponding public subnet and serves a corresponding private subnet.
+# This setup provides high availability and fault tolerance, but is more expensive than sharing a single NAT gateway
+# across multiple private subnets.
+
 resource "aws_nat_gateway" "name" {
     count = length(var.private_subnet_cidrs)
     allocation_id = aws_eip.nat[count.index].id
@@ -206,6 +230,21 @@ resource "aws_nat_gateway" "name" {
     }
 }
 
+# route { cidr_block = "0.0.0.0/0"; nat_gateway_id = aws_nat_gateway.name[count.index].id }: Adds a default route
+# that sends all outbound traffic from the private subnet to the NAT gateway, enabling internet access for private resources.
+
+# In AWS route tables, each route typically consists of:
+
+# cidr_block: The destination IP range for the route (e.g., 0.0.0.0/0 for all IPv4 addresses).
+# A target, which can be one of several types, such as:
+# gateway_id: For routes to an internet gateway (used in public subnets).
+# nat_gateway_id: For routes to a NAT gateway (used in private subnets).
+# Other options include instance_id, vpc_peering_connection_id, transit_gateway_id, etc.
+# So, for internet access:
+
+# Public subnets use gateway_id (internet gateway).
+# Private subnets use nat_gateway_id (NAT gateway).
+# The combination of cidr_block and a target (gateway, NAT, etc.) defines how traffic is routed.
 resource "aws_route_table" "private" {
     count = length(var.private_subnet_cidrs)
     vpc_id = aws_vpc.main.id
