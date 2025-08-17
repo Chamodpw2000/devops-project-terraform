@@ -1,0 +1,51 @@
+Kubectl in VM depends on a file called kubeconfig.
+
+It is a configuration file that contains information about all the Kubernetes clusters of the organization.
+
+kubeconfig context is the current cluster, user, and namespace that kubectl is configured to use. 
+It determines which cluster kubectl communicates with and the credentials used for authentication.
+
+kubectl config view command displays the current kubeconfig settings, including clusters, contexts, and user information.
+
+kubectl config current-context command shows the current context in use, which includes the cluster, user, and namespace.
+
+kubectl config use-context <context-name> command switches to a different context.
+
+First we need to install AWS CLI in the VM to interact with kubeconfig.
+
+aws configure command is used to set up the AWS CLI with your credentials and default region. (AWS Access Key ID, AWS Secret Access Key, Default region name, Default output format )
+
+aws eks update-kubeconfig --region us-west-2 --name my-eks-cluster - with this command, the kubeconfig file is updated to include the new EKS cluster context.
+
+kubectl config view command displays the current kubeconfig settings, including clusters, contexts, and user information.
+
+cubectl get nodes command lists all the nodes in the current Kubernetes cluster, showing their status and roles.
+
+ubuntu@ip-172-31-25-233:~$ kubectl get nodes
+NAME                                       STATUS   ROLES    AGE   VERSION
+ip-10-0-2-116.us-west-2.compute.internal   Ready    <none>   29m   v1.30.14-eks-3abbec1
+ip-10-0-3-32.us-west-2.compute.internal    Ready    <none>   29m   v1.30.14-eks-3abbec1
+
+there are 2 nodes in the cluster, both in Ready state. In our code we defined to use 4 EC2 instances as nodes. 
+
+variable "node_groups" {
+.
+.
+.
+
+  default = {
+    general = {
+      instance_types = ["t3.micro"]
+      capacity_type  = "ON_DEMAND"
+      scaling_config = {
+        desired_size = 2  <----- here we defined to use 2 as desired size
+        max_size     = 4
+        min_size     = 1
+      }
+    }
+  }
+}
+
+
+
+
