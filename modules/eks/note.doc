@@ -20,3 +20,51 @@ Two separate polices need for the two roles:
 2. EKS Node Group Role Policy: This policy should include permissions for EC2 instance management, 
    ECR access, CloudWatch logging, and any other necessary AWS services that the worker nodes will
    need to interact with.   
+
+aws_iam_role_policy_attachment
+
+The aws_iam_role_policy_attachment resource in Terraform attaches an IAM policy to an IAM role.
+
+Explanation:
+
+It links a specific policy (like AmazonEKSClusterPolicy) to a role (like your EKS cluster role).
+This grants the role the permissions defined in the policy.
+For example, attaching AmazonEKSClusterPolicy to the cluster role allows the EKS control plane to manage AWS resources needed for the cluster.
+
+In summary:
+This resource ensures your IAM roles have the necessary permissions by associating them with AWS-managed or custom policies.
+
+AWS EKS Cluster
+
+The aws_eks_cluster resource in Terraform creates an Amazon EKS (Elastic Kubernetes Service) cluster.
+
+Key points:
+
+name: The name of your EKS cluster.
+version: The Kubernetes version for the cluster.
+role_arn: The IAM role that EKS uses to manage AWS resources (must have the correct trust and permissions).
+vpc_config: Specifies networking details, including the subnets where the cluster will run.
+depends_on: Ensures the IAM role and policy attachment are created before the cluster.
+Purpose: This resource provisions the EKS control plane, which manages Kubernetes workloads and worker nodes in your specified VPC and subnets. 
+It is the core resource for running Kubernetes on AWS.
+
+
+The aws_eks_node_group resource in Terraform creates a managed group of EC2 worker nodes for your EKS cluster.
+
+Key points:
+
+cluster_name: The name of the EKS cluster these nodes will join.
+node_group_name: The name for this node group.
+node_role_arn: The IAM role that grants permissions for the nodes to interact with AWS and EKS.
+subnet_ids: The subnets where the nodes will be launched.
+instance_types: The EC2 instance types for the nodes.
+capacity_type: Specifies if the nodes are On-Demand or Spot instances.
+scaling_config: Sets the desired, minimum, and maximum number of nodes in the group.
+
+Purpose: This resource provisions and manages the lifecycle of worker nodes for your Kubernetes workloads, 
+handling scaling, updates, and integration with the EKS control plane.
+
+
+
+
+
