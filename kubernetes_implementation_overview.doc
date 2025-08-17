@@ -1,0 +1,59 @@
+Kubernetes Implementation Overview
+
+A pod is the smallest deployable unit in Kubernetes. It represents one or more containers that share the same network IP, storage, and configuration. All containers in a pod run on the same node and can easily communicate with each other. Pods are used to run your application workloads in Kubernetes.
+
+Service Account
+
+A service account in Kubernetes is an identity used by pods to interact with the Kubernetes API. It provides credentials for processes running inside pods, allowing them to access resources, perform actions, or authenticate to other services. Service accounts are commonly used for automation, controllers, and applications that need API access.
+
+The default service account in Kubernetes is automatically created in every namespace. When you deploy a pod and do not specify a service account, Kubernetes assigns the pod to the default service account of its namespace.
+
+It provides basic credentials for the pod to interact with the Kubernetes API.
+By default, it has limited permissions (usually read-only access).
+You can see it with: kubectl get serviceaccount
+For most workloads, you should create custom service accounts with specific permissions for security.
+In summary:
+The default service account is a basic identity for pods, used when no other service account is specified.
+
+A pod need a specific service account when:
+
+It requires specific permissions to access Kubernetes resources.
+It needs to authenticate with external services or APIs.
+It runs automation tasks that require API access.
+It needs to interact with other Kubernetes components securely.
+
+We can create a role with required permissions and bind it with service account using role binding or clustor role binding.
+
+Deployment
+
+We need two types of Resources to deploy a project in Kubernetes.
+
+1. Deployment - Responsible for Scaling and Healing,
+2. Service - Responsible for service discovery
+
+Scaling - Ensures that the desired number of pod replicas are running and can automatically adjust the number of replicas based on demand.
+
+Healing - Automatically replaces or restarts failed or unhealthy pods to maintain the desired state of the application.
+
+When we want to deploy a micro service, we typically create a Deployment resource to manage the pods running the micro service. It will create a intermediate resource called ReplicaSet. This will spinup containers or pods. 
+
+In deployment YAML file, we define the desired state of the application, including the container image, replicas, and other configurations. Kubernetes will ensure that the actual state matches the desired state. 
+
+If one replica fails, the Deployment controller will automatically create a new pod to replace it, ensuring that the desired number of replicas is always maintained and it is called as self-healing.
+
+A "replica" is an instance of a pod, but the pod itself is the resource definition. Replicas are used to run multiple identical pods for redundancy and load balancing
+
+
+Service Resource
+
+The main problem with pods is that they are ephemeral, meaning they can be created and destroyed frequently. This makes it difficult to reliably access them using their IP addresses. This is called as service discovery problem.
+
+To solve this problem, Kubernetes provides a stable endpoint for accessing pods through a Service resource. A Service is an abstraction that defines a logical set of pods and a policy by which to access them.
+
+Services enable communication between different parts of an application, as well as between applications. They provide load balancing, service discovery, and stable network identities for pods.
+
+Service is a proxy that sits in front of a set of pods and routes traffic to them. It abstracts away the underlying pod IPs and provides a single stable endpoint for clients to access the pods. This allows clients to communicate with the service without needing to know the details of the individual pods.
+
+Service is not only for internal communication but can also be exposed externally to allow access from outside the cluster.
+
+
