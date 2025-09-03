@@ -26,7 +26,7 @@ NAME                                       STATUS   ROLES    AGE   VERSION
 ip-10-0-2-116.us-west-2.compute.internal   Ready    <none>   29m   v1.30.14-eks-3abbec1
 ip-10-0-3-32.us-west-2.compute.internal    Ready    <none>   29m   v1.30.14-eks-3abbec1
 
-there are 2 nodes in the cluster, both in Ready state. In our code we defined to use 4 EC2 instances as nodes. 
+there are 2 nodes in the cluster, both in Ready state. In our code we defined to use 2 EC2 instances as nodes. 
 
 variable "node_groups" {
 .

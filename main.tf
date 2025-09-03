@@ -30,20 +30,18 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "demo-terraform-eks-chamod-state-bucket-chamod"
+    bucket = "demo-terraform-eks-chamod-state-bucket-chamod-apsouth1-20250818"
     key = "terraform.tfstate"
-    region  = "us-west-2"
+    region  = "ap-south-1"
     dynamodb_table = "terraform-eks-state-locks" 
     encrypt = true
-    
-    
   }
 }
 
 
 
 provider "aws" {
-  region = "us-west-2"
+  region = "ap-south-1"
 }
 
 

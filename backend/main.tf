@@ -1,6 +1,6 @@
 //Provider block defines the cloud provider and region
 provider "aws" {
-    region = "us-west-2"
+    region = "ap-south-1"
 }
 
 # This Terraform block defines an AWS S3 bucket resource:
@@ -17,7 +17,8 @@ provider "aws" {
 
 resource "aws_s3_bucket" "s3-bucket" {
 
-bucket = "demo-terraform-eks-chamod-state-bucket-chamod"
+bucket = "demo-terraform-eks-chamod-state-bucket-chamod-apsouth1-20250818"
+force_destroy = true
 lifecycle {
     prevent_destroy = false
 } 
