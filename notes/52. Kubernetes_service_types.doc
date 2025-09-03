@@ -1,0 +1,37 @@
+There are 3 types of kubernetes services:
+1. ClusterIP
+2. NodePort
+3. LoadBalancer
+
+1. ClusterIP -  This is the default service type. It exposes the service on a cluster-internal IP. 
+   Pods can communicate with the service using this IP, but it is not accessible from outside the cluster.
+
+So even in the same VPC for an instance that is outside the cluster, it cannot access the service. Only the node is able to access the service using the cluster-internal IP.
+External Instance can access only the node IP.
+
+2. NodePort - This service type exposes the service on each node's IP at a static port (the NodePort). 
+   A ClusterIP service, to which the NodePort service routes, is automatically created. 
+   You can contact the NodePort service from outside the cluster by requesting <NodeIP>:<NodePort>.
+   When change the service type to NodePort, kubernetes allocates a port from a range (default: 30000-32767) and each node in the cluster will listen on that port.
+
+In Kubernetes, when you create a NodePort service, Kubernetes automatically creates a ClusterIP service behind the scenes.
+
+The ClusterIP service acts as the internal load balancer for your pods. It gets a stable internal IP address and routes traffic to the pods.
+The NodePort service exposes that ClusterIP service on a static port on every node in your cluster, making it accessible from outside 
+the cluster via <NodeIP>:<NodePort>.
+So, when you access the NodePort, your request first goes to the node’s IP and port, then gets forwarded to the ClusterIP service, 
+which finally routes it to the correct pod(s). This setup allows both internal and external access to your application.
+
+
+3. LoadBalancer - This service type exposes the service externally using a cloud provider's load balancer. 
+   When you create a LoadBalancer service, Kubernetes will provision a load balancer for your service, and it will be assigned a public IP address.
+   You can access the service using this public IP address.
+
+   When changing the service type to LoadBalancer, Kubernetes will interact with the cloud provider's API to provision the load balancer.
+   This process may take a few moments, and the service will remain in a pending state until the load balancer is ready.
+   Once the load balancer is provisioned, it will be assigned a public IP address, which you can use to access the service from outside the cluster.
+
+
+
+
+
