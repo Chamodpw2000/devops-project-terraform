@@ -1,0 +1,23 @@
+Creating a Load Balancer.
+
+1. Create a Service of type LoadBalancer.
+2. This instruction taken by API server.
+3. It passes this instruction to cloud control manager.
+4. Cloud control manager creates a load balancer in the cloud provider.
+5. Ip address of the load balancer is assigned to the previously created Load Balancer service.
+
+Cons of Load Balancer
+
+1. Less Declarative Approach - Only thing we mention in kubernetes files is that service type is LoadBalancer, if we make other changers
+they have to do in cloud provider UI and can not keep track of those changers. 
+
+2. Not cost effective
+
+3. Lack of flexibility - This approach highly depends on the cloud control manager and only can use cloud providers load balancer, can not use
+other Load Balancer like Nginx, HAProxy etc.
+
+4. If cloud provider does not support CCM, this approach will not work.
+
+
+Only pro of load balancer service type is that it is easy to set up and use, requiring minimal configuration.
+
