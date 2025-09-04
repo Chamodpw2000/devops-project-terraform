@@ -1,0 +1,135 @@
+To deploy the ALB controller the resource type should be NodePort. 
+
+In the service directory, ingress.yaml configuration should be created. 
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-proxy
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: opentelemetry-demo-frontendproxy
+                port:
+                  number: 8080
+
+
+apiVersion: networking.k8s.io/v1
+
+Specifies the API version for the Ingress resource.
+kind: Ingress
+
+Declares that this resource is an Ingress, used for HTTP(S) routing.
+metadata
+
+name: frontend-proxy: The name of the Ingress resource.
+annotations: Extra configuration for the Ingress controller.
+alb.ingress.kubernetes.io/scheme: internet-facing: Tells AWS ALB to be public.
+alb.ingress.kubernetes.io/target-type: ip: Targets pods directly by IP.
+spec
+
+ingressClassName: alb: Specifies to use the AWS ALB Ingress Controller.
+rules
+
+Defines how incoming requests are routed.
+host: example.com: Only requests for this host are matched.
+http: Specifies HTTP routing rules.
+paths
+
+List of path rules for routing.
+path: "/": Matches all requests to the root path.
+pathType: Prefix: Matches all paths that start with /.
+backend
+
+Specifies where to send matched requests.
+service: The Kubernetes service to route traffic to.
+name: opentelemetry-demo-frontendproxy: The service name.
+port: number: 8080: The service port.
+Summary:
+This Ingress routes all HTTP requests for example.com at path / to the opentelemetry-demo-frontendproxy service on port 8080, using an internet-facing AWS ALB.
+
+Then run 
+
+ kubectl apply -f ingress.yaml
+
+ this command will create the ingress resource in the cluster by ingress controller.
+
+ to veryfy the ingress is created run
+
+ubuntu@ip-172-31-25-233:~/ultimate-devops-project-demo/kubernetes/frontendproxy$ kubectl apply -f ingress.yaml
+ingress.networking.k8s.io/frontend-proxy created
+ubuntu@ip-172-31-25-233:~/ultimate-devops-project-demo/kubernetes/frontendproxy$ kubectl get ing
+NAME             CLASS   HOSTS         ADDRESS                                                                  PORTS   AGE
+frontend-proxy   alb     example.com   k8s-default-frontend-6e54782b3e-936451908.ap-south-1.elb.amazonaws.com   80      64s
+
+
+Finally this service contains 3 files.
+
+
+1. Deployment (deploy.yaml)
+
+Duty: Runs and manages your application pods.
+
+Ensures the right number of replicas are running.
+
+Defines the container image, environment variables, and ports.
+
+Handles rolling updates and rollbacks.
+
+Runs the frontendproxy container (ghcr.io/open-telemetry/demo:1.12.0-frontendproxy) and exposes it internally on port 8080.
+
+2. Service (svc.yaml)
+
+Duty: Provides a stable network identity for the Pods created by the Deployment.
+
+Since Pods are dynamic (created/destroyed), their IPs change — the Service keeps a consistent endpoint.
+
+Usually of type ClusterIP (internal only), NodePort (accessible via node IPs), or LoadBalancer (cloud provider LB).
+
+The Service named opentelemetry-demo-frontendproxy will point to all frontendproxy Pods and forward traffic to port 8080.
+
+3. Ingress (ingress.yaml)
+
+Duty: Provides HTTP(S) routing from outside the cluster to Services inside.
+
+Needs an Ingress Controller (you’re using AWS ALB).
+
+Matches hostnames and paths (like example.com/) and sends traffic to the right Service.
+
+
+All requests to https://example.com/ are routed via AWS ALB to the frontendproxy Service, which then forwards them to the Pods.
+
+🔗 How They Work Together
+[User Browser] --> [Ingress(ALB)] --> [Service] --> [Pods via Deployment]
+
+
+Deployment → Makes sure your app (frontendproxy) runs in Pods.
+
+Service → Provides a stable way to talk to those Pods.
+
+Ingress → Makes the Service available to the outside world (internet-facing).
+
+⚡ Think of it like this:
+
+Deployment = Restaurant kitchen (chefs/pods cooking food/app).
+
+Service = Waiters (consistent way for customers to reach chefs).
+
+Ingress = Restaurant entrance (the public entry point people use to reach the waiters).
+
+
+
+
+
+
+     
