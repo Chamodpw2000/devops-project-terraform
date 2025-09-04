@@ -1,0 +1,40 @@
+Ingress -> incoming traffic
+
+Kubernetes Ingress is a powerful resource that allows you to manage external access to your services in a Kubernetes cluster. 
+It provides a way to define rules for routing HTTP(S) traffic to different services based on the request's host and path.
+
+when we create a ingress resource, we define the rules for routing traffic in a YAML file. 
+This file specifies the hostnames and paths to match, as well as the backend services to route the traffic to. 
+Once the Ingress resource is created, the Ingress controller takes over and manages the traffic routing according to the defined rules.
+
+Flow of Ingress:
+
+1. Create a Ingress controller and configuration YAML file.
+
+2. Ingress Controller reads the configuration from the Ingress resource and creates load balancer accordingly.
+
+
+configuration YAML file
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+  labels:
+    app: example
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: example-service
+            port:
+              number: 80
+
+
+
+
