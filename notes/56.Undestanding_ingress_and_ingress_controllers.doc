@@ -1,0 +1,8 @@
+Ingress Controller should be deployed by us.
+
+1. Need to identify which Ingress controller to use. (Nginx, Traefik, HAProxy, etc)
+(Load balancer companies also provide their own ingress controllers like AWS ALB Ingress controller)
+2. Deploy the Ingress controller in the cluster.
+3. Create a Ingress resource configuration YAML file for required service.
+
+Then the Ingress controller is watching at the Ingress resource and will read the configuration from the Ingress resource and create load balancer accordingly.
