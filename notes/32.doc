@@ -1,0 +1,14 @@
+Terraform Lifecycle Overview
+
+Terraform init - Initializes a working directory containing Terraform configuration files. It sets up the backend, 
+downloads provider plugins, and prepares the environment for further Terraform commands.
+
+Terraform plan - Creates an execution plan, showing what actions Terraform will take to change the infrastructure
+to match the desired state defined in the configuration files. This step allows you to review the changes before
+they are applied.
+
+Terraform apply - Applies the changes required to reach the desired state of the configuration. This step
+provisions the infrastructure and can create, update, or delete resources as needed.
+
+Terraform destroy - Destroys the infrastructure managed by Terraform, removing all resources defined in the
+configuration files. This step is typically used for cleanup or when you no longer need the resources.
