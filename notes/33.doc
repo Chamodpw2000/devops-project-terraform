@@ -1,0 +1,21 @@
+Connect Terraform with AWS
+
+Log in to aws account.
+
+click on, security credentials ----> access keys ----> create new access key.
+
+Use command line interface as use case and create access key.
+
+
+Download awand install aws cli and configure it.
+
+aws configure with access key id and secret access key.
+
+
+
+
+
+
+
+
+

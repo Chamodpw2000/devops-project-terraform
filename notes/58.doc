@@ -109,7 +109,7 @@ Matches hostnames and paths (like example.com/) and sends traffic to the right S
 
 All requests to https://example.com/ are routed via AWS ALB to the frontendproxy Service, which then forwards them to the Pods.
 
-🔗 How They Work Together
+How They Work Together
 [User Browser] --> [Ingress(ALB)] --> [Service] --> [Pods via Deployment]
 
 
@@ -119,7 +119,7 @@ Service → Provides a stable way to talk to those Pods.
 
 Ingress → Makes the Service available to the outside world (internet-facing).
 
-⚡ Think of it like this:
+Think of it like this:
 
 Deployment = Restaurant kitchen (chefs/pods cooking food/app).
 
