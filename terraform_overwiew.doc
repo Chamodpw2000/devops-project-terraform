@@ -1,4 +1,4 @@
-Terraform has several types of blocks that serve different purposes in Infrastructure as Code (IaC) configuration.
+Terraform has several types of blocks that serve different purposes in Infrastructure as Code (IaaC) configuration.
 Here are the main types of blocks in Terraform:
 
 1. Resource Block : Define infrastructure components that Terraform should create, update, or delete.
@@ -88,7 +88,8 @@ Terraform Cloud/Enterprise
 
 State Locking
 
-State locking in Terraform is a mechanism that prevents multiple users or processes from making concurrent changes to the same state file. This is important because simultaneous updates can corrupt the state and lead to inconsistent infrastructure.
+State locking in Terraform is a mechanism that prevents multiple users or processes from making concurrent changes to the same state file. 
+This is important because simultaneous updates can corrupt the state and lead to inconsistent infrastructure.
 
 How State Locking Works
 

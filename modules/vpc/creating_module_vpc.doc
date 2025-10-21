@@ -93,9 +93,9 @@ AWS Elastic IP
 
 An Elastic IP is a static, public IPv4 address that you can allocate to your AWS account.
 It is commonly used to provide a persistent public IP for resources like NAT gateways or EC2 instances.
-In your code, aws_eip is used to allocate EIPs for NAT gateways, allowing private subnets to access the internet (outbound) while keeping 
+Aws eip can be used to allocate EIPs for NAT gateways, allowing private subnets to access the internet (outbound) while keeping 
 their resources inaccessible from the internet (inbound).
-The domain = "vpc" argument ensures the EIP is for use within a VPC.
+
 
 An AWS NAT Gateway is a managed network service that enables resources in private subnets to access the internet for outbound traffic, 
 while preventing inbound connections from the internet.
