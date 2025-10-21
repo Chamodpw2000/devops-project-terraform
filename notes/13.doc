@@ -1,0 +1,54 @@
+install Kubectl in VM
+
+Kubectl is a command-line tool for interacting with Kubernetes clusters. To install kubectl in your VM, follow these steps:
+
+Install kubectl binary with curl on Linux
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+
+after running the kubectl  binary is downloaded placed in the current directory.
+
+Validate the binary (optional)
+
+Download the kubectl checksum file:
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+
+Validate the kubectl binary against the checksum file:
+
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+
+If valid, the output is:
+
+kubectl: OK
+
+If the check fails, sha256 exits with nonzero status and prints output similar to:
+
+kubectl: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+
+Install kubectl
+
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+check the version to ensure the installation was successful:
+
+kubectl version --client
+
+Basically Kubectl consists of a client and server part. The client part is the kubectl command-line tool that you run on your local machine or VM. The server part is the kube-apiserver that runs in your Kubernetes cluster.
+
+The kubectl command-line tool communicates with the kube-apiserver to manage and interact with the Kubernetes cluster.
+
+The kube-apiserver exposes the Kubernetes API, which is used by kubectl and other components to perform operations such as deploying applications, scaling workloads, and managing cluster resources.
+
+kubectl (Client): The command-line tool you run locally (or in a VM) to interact with the cluster. It acts as the user interface.
+
+kube-apiserver: The central component of the control plane that receives requests from kubectl and other clients. It validates, processes, and forwards them to other components. This is where the Kubernetes API is exposed—it's not a separate layer but the RESTful interface provided by the kube-apiserver.
+
+Kubernetes API: The programmatic interface (set of endpoints) that defines how to interact with the cluster. It's implemented by the kube-apiserver and used for operations like creating pods, services, etc.
+
+Kubernetes Cluster: The broader system, including the control plane (e.g., etcd for storage, scheduler, controller manager) and worker nodes (where pods run).
+
+So the flow like:
+kubectl → kube-apiserver (exposing the Kubernetes API) → Control Plane Components (e.g., etcd, scheduler) → Worker Nodes (pods, containers).
