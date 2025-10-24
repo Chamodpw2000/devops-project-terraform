@@ -6,13 +6,14 @@ There are 3 types of kubernetes services:
 1. ClusterIP -  This is the default service type. It exposes the service on a cluster-internal IP. 
    Pods can communicate with the service using this IP, but it is not accessible from outside the cluster.
 
-So even in the same VPC for an instance that is outside the cluster, it cannot access the service. Only the node is able to access the service using the cluster-internal IP.
-External Instance can access only the node IP.
+So even in the same VPC for an instance that is outside the cluster, it cannot access the service. Only the node is able to 
+access the service using the cluster-internal IP.External Instance can access only the node IP.
 
 2. NodePort - This service type exposes the service on each node's IP at a static port (the NodePort). 
    A ClusterIP service, to which the NodePort service routes, is automatically created. 
    You can contact the NodePort service from outside the cluster by requesting <NodeIP>:<NodePort>.
-   When change the service type to NodePort, kubernetes allocates a port from a range (default: 30000-32767) and each node in the cluster will listen on that port.
+   When change the service type to NodePort, kubernetes allocates a port from a range (default: 30000-32767) and each node in the 
+   cluster will listen on that port.
 
 In Kubernetes, when you create a NodePort service, Kubernetes automatically creates a ClusterIP service behind the scenes.
 

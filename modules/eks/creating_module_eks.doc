@@ -29,10 +29,12 @@ Explanation:
 
 It links a specific policy (like AmazonEKSClusterPolicy) to a role (like your EKS cluster role).
 This grants the role the permissions defined in the policy.
-For example, attaching AmazonEKSClusterPolicy to the cluster role allows the EKS control plane to manage AWS resources needed for the cluster.
+For example, attaching AmazonEKSClusterPolicy to the cluster role 
+allows the EKS control plane to manage AWS resources needed for the cluster.
 
 In summary:
-This resource ensures your IAM roles have the necessary permissions by associating them with AWS-managed or custom policies.
+This resource ensures your IAM roles have the necessary permissions by associating them with 
+AWS-managed or custom policies.
 
 AWS EKS Cluster
 
@@ -66,8 +68,11 @@ handling scaling, updates, and integration with the EKS control plane.
 
 In AWS EKS (Elastic Kubernetes Service):
 
-Private subnets are used for worker nodes (EC2 instances) and internal resources. They are not directly accessible from the internet, which improves security. EKS recommends placing your cluster nodes in private subnets.
-Public subnets are typically used for resources that need direct internet access, such as load balancers (e.g., AWS ELB/NLB) or NAT gateways. These subnets have a route to an internet gateway.
+Private subnets are used for worker nodes (EC2 instances) and internal resources. They are not directly accessible from the internet, 
+which improves security. EKS recommends placing your cluster nodes in private subnets.
+Public subnets are typically used for resources that need direct internet access, such as load balancers 
+(e.g., AWS ELB/NLB) or NAT gateways. These subnets have a route to an internet gateway.
+
 In summary:
 
 Worker nodes and internal services → private subnets

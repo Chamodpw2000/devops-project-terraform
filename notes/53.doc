@@ -4,12 +4,12 @@ kubectl edit svc opentelemetry-demo-frontendproxy
 
 changed the service type of that document to LoadBalancer from ClusterIP
 
-ubuntu@ip-172-31-25-233:~/ultimate-devops-project-demo/kubernetes$ kubectl edit svc opentelemetry-demo-frontendproxy
+kubectl edit svc opentelemetry-demo-frontendproxy
+
+
 service/opentelemetry-demo-frontendproxy edited
 
-then 
-
-ubuntu@ip-172-31-25-233:~/ultimate-devops-project-demo/kubernetes$ kubectl get svc opentelemetry-demo-frontendproxy
+ kubectl get svc opentelemetry-demo-frontendproxy
 NAME                               TYPE           CLUSTER-IP       EXTERNAL-IP                                                                PORT(S)          AGE
 opentelemetry-demo-frontendproxy   LoadBalancer   172.20.210.152   aca8ae0d61b28488fb4795c0f406598d-2034321801.ap-south-1.elb.amazonaws.com   8080:31382/TCP   96m
 

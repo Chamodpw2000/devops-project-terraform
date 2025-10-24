@@ -49,7 +49,8 @@ Deploy ALB controller
 
 Helm is basically the package manager for Kubernetes (like apt for Ubuntu or npm for Node.js).
 
-Instead of writing long YAML manifests for every deployment, service, configmap, etc., Helm lets you install applications into your Kubernetes cluster using pre-packaged bundles called Helm charts.
+Instead of writing long YAML manifests for every deployment, service, configmap, etc., Helm lets you install applications into your Kubernetes cluster 
+using pre-packaged bundles called Helm charts.
 
 📦 What is a Helm Chart?
 

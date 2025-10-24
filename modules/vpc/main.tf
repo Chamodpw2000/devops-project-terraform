@@ -114,9 +114,6 @@ resource "aws_subnet" "private" {
   
 }
 
-# map_public_ip_on_launch = true:
-# Automatically assigns a public IP address to any EC2 instance launched in this subnet, 
-# making it accessible from the internet.
 
 # Public Subnet
 # Purpose:

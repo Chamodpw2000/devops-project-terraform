@@ -13,6 +13,8 @@ used for automation, controllers, and applications that need API access.
 The default service account in Kubernetes is automatically created in every namespace. When you deploy a pod and do not specify a service 
 account, Kubernetes assigns the pod to the default service account of its namespace.
 
+A namespace  in k8s is a way to divide cluster resources between multiple users (via resource quota).
+
 It provides basic credentials for the pod to interact with the Kubernetes API.
 By default, it has limited permissions (usually read-only access).
 You can see it with: kubectl get serviceaccount
@@ -106,6 +108,110 @@ kubectl apply -f deployment.yaml
 
 after creating the service account we can run the deployment file.
 
+
+Detailed breakdown of a typical Kubernetes deployment manifest like deploy.yaml:
+
+apiVersion: Specifies the Kubernetes API version (e.g., apps/v1).
+
+In Kubernetes, the "apiVersion" field in a manifest file specifies which version of the Kubernetes API should be used to 
+process and manage the resource described in the file.
+
+Each resource type (like Deployment, Service, Pod) may have different API versions, such as:
+
+v1 (for core resources like Pod, Service)
+apps/v1 (for resources like Deployment, StatefulSet)
+batch/v1 (for resources like Job, CronJob)
+The apiVersion ensures compatibility and determines which features and schema are available for that 
+resource. Using the correct apiVersion is important for Kubernetes to understand and correctly 
+handle the resource.
+
+kind: Indicates the resource type, usually Deployment.
+
+In Kubernetes manifests, the "kind" field specifies the type of resource you want to create or manage.
+
+Examples of "kind" values include:
+
+Pod: A single container or group of containers.
+Service: Exposes a set of pods as a network service.
+Deployment: Manages a set of replicated pods, enabling updates and scaling.
+ConfigMap, Secret, StatefulSet, etc.
+
+The "kind" tells Kubernetes what action to take and how to interpret the rest of the manifest. 
+Each kind has its own structure and purpose within the cluster.
+
+metadata: Contains identifying information such as name, namespace, and labels for the deployment.
+
+Labels in Kubernetes metadata are used to organize, identify, and select resources. 
+They are key-value pairs attached to objects like pods, deployments, and services.
+
+Reasons for using labels:
+
+Enable grouping and filtering of resources (e.g., select all pods with app=accounting).
+Facilitate service discovery and load balancing.
+Support deployment strategies, scaling, and rolling updates.
+Help manage environments (e.g., env=prod, env=dev).
+Labels make it easy to manage and automate operations in large clusters by 
+allowing flexible queries and resource selection.
+
+A namespace in Kubernetes is used to divide cluster resources between multiple users, teams, or environments. It provides a way 
+to organize and isolate resources such as pods, services, and deployments.
+
+Reasons for using namespaces:
+
+Separation of environments (e.g., development, testing, production).
+Resource isolation for security and management.
+Avoiding naming conflicts between resources.
+Delegating access and permissions to different teams.
+Namespaces help manage large clusters by grouping related resources and controlling access.
+
+spec:
+
+replicas: Number of pod instances to run for the service.
+selector: Defines how Kubernetes matches pods to this deployment using labels.
+template:
+metadata: Labels for the pods created by this deployment.
+spec:
+containers: List of containers to run in each pod.
+name: Name of the container.
+image: Docker image for the accounting service.
+ports: Exposed container ports.
+env: Environment variables for configuration.
+resources: CPU and memory limits/requests.
+livenessProbe/readinessProbe: Health checks to ensure the pod is running and ready.
+
+Service File
+
+A Service file in Kubernetes is a YAML manifest that defines a network service to expose a set of pods. 
+It provides a stable endpoint for accessing pods, load balancing traffic, and service discovery.
+
+Main components:
+
+apiVersion: Specifies the API version (usually v1).
+kind: Indicates the resource type (Service).
+metadata: Contains the name and labels for identification.
+
+spec:
+type: How the service is exposed (ClusterIP, NodePort, LoadBalancer).
+ports: Defines which ports the service exposes and maps them to pod ports.
+selector: Uses labels to select the pods that receive traffic.
+
+ClusterIP:
+The default type. Makes the service accessible only within the Kubernetes cluster. 
+Used for internal communication between services and pods.
+
+NodePort:
+Exposes the service on a static port on each node’s IP address. 
+Allows external access to the service using <NodeIP>:<NodePort>. Useful for development or simple external access.
+
+LoadBalancer:
+Provisions an external load balancer (if supported by the cloud provider). 
+Exposes the service to the internet, distributing traffic across nodes and pods. Used for production-grade, public-facing services.
+
+
+Purpose:
+Ensures reliable communication between components.
+Provides load balancing and a single access point for pods.
+Enables service discovery within the cluster.
 
 
 
